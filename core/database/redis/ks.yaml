@@ -4,7 +4,7 @@ metadata:
   name: redis-operator
   namespace: flux-system
 spec:
-  path: "./core/database/redis/operator"
+  path: "./core/database/redis/app"
   dependsOn:
     - name: prometheus-crds
     - name: rook-ceph
