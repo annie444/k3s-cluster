@@ -133,7 +133,7 @@ spec:
         whenDeleted: Retain
 
       service:
-        type: LoadBalancer
+        type: ClusterIP
         labels:
           ip-addr: "true"
         portNames:
@@ -230,7 +230,7 @@ spec:
         whenDeleted: Retain
       
       service:
-        type: LoadBalancer
+        type: ClusterIP
         labels:
           ip-addr: "true"
         ports:
