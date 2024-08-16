@@ -3,6 +3,7 @@ keys:
   - &flux age1ytrqecjj2kvak35zl7m8wyn3cqgtd8f64548fc9uzfl9q0js43csn8ul7k
 creation_rules: 
   - path_regex: config/secrets/[^/]+\.(yaml|json|env|ini|enc)$
+    encrypted_regex: ^(data|stringData)$
     key_groups:
       - age:
         - *annie

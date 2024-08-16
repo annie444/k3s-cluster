@@ -69,7 +69,7 @@ spec:
         - name: VPN_SERVICE_PROVIDER
           value: custom
         - name: VPN_TYPE
-          value: ${SECRET_VPN_TYP}
+          value: ${SECRET_VPN_TYPE}
         - name: VPN_INTERFACE
           value: ${SECRET_VPN_INTERFACE}
         - name: OPENVPN_CUSTOM_CONFIG

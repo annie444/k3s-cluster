@@ -20,25 +20,15 @@ spec:
   values:
 
     global:
-      imageRegistry: ""
-      imagePullSecrets: []
-      defaultStorageClass: ""
-      storageClass: ""
       redis:
-        password: ""
+        password: "${SECRET_DATABASE_PASSWORD}"
       compatibility:
         openshift:
           adaptSecurityContext: disabled
 
-    kubeVersion: ""
     nameOverride: "redis"
     fullnameOverride: "redis"
-    namespaceOverride: ""
-    commonLabels: {}
-    commonAnnotations: {}
-    secretAnnotations: {}
     clusterDomain: cluster.local
-    extraDeploy: []
     useHostnames: true
     nameResolutionThreshold: 5
     nameResolutionTimeout: 5
@@ -53,9 +43,7 @@ spec:
       registry: docker.io
       repository: bitnami/redis
       tag: 7.2.5-debian-12-r4
-      digest: ""
       pullPolicy: IfNotPresent
-      pullSecrets: []
       debug: false
 
     architecture: replication
@@ -71,23 +59,13 @@ spec:
       # Disable RDB persistence, AOF persistence already enabled.
       save ""
 
-    existingConfigmap: ""
-
     master:
       count: 1
       revisionHistoryLimit: 3
-      configuration: ""
       disableCommands:
         - FLUSHDB
         - FLUSHALL
-      command: []
-      args: []
       enableServiceLinks: true
-      preExecCmds: []
-      extraFlags: []
-      extraEnvVars: []
-      extraEnvVarsCM: ""
-      extraEnvVarsSecret: ""
       containerPorts:
         redis: 6379
 
@@ -115,26 +93,15 @@ spec:
         successThreshold: 1
         failureThreshold: 5
       
-      customStartupProbe: {}
-      
-      customLivenessProbe: {}
-      
-      customReadinessProbe: {}
-      
       resourcesPreset: "nano"
-      
-      resources: {}
       
       podSecurityContext:
         enabled: true
         fsGroupChangePolicy: Always
-        sysctls: []
-        supplementalGroups: []
         fsGroup: 1001
      
       containerSecurityContext:
         enabled: true
-        seLinuxOptions: {}
         runAsUser: 1001
         runAsGroup: 1001
         runAsNonRoot: true
@@ -146,50 +113,20 @@ spec:
           drop: ["ALL"]
       
       kind: StatefulSet
-      schedulerName: ""
       updateStrategy:
         type: RollingUpdate
       
       minReadySeconds: 0
-      priorityClassName: ""
       automountServiceAccountToken: false
-      hostAliases: []
-      podLabels: {}
-      podAnnotations: {}
       shareProcessNamespace: false
-      podAffinityPreset: ""
       podAntiAffinityPreset: soft
-      nodeAffinityPreset:
-        type: ""
-        key: ""
-        values: []
-      affinity: {}
-      nodeSelector: {}
-      tolerations: []
-      topologySpreadConstraints: []
       dnsPolicy: "ClusterFirst"
-      dnsConfig: {}
-      lifecycleHooks: {}
-      extraVolumes: []
-      extraVolumeMounts: []
-      sidecars: []
-      initContainers: []
       persistence:
         enabled: true
-        medium: ""
-        sizeLimit: ""
         path: /data
-        subPath: ""
-        subPathExpr: ""
-        storageClass: ""
         accessModes:
           - ReadWriteOnce
         size: 8Gi
-        annotations: {}
-        labels: {}
-        selector: {}
-        dataSource: {}
-        existingClaim: ""
       persistentVolumeClaimRetentionPolicy:
         enabled: false
         whenScaled: Retain
@@ -204,49 +141,29 @@ spec:
         ports:
           redis: 6379
         nodePorts:
-          redis: ""
         externalTrafficPolicy: Cluster
-        extraPorts: []
         internalTrafficPolicy: Cluster
-        clusterIP: ""
-        loadBalancerIP: ""
-        loadBalancerClass: ""
-        loadBalancerSourceRanges: []
-        externalIPs: []
         sessionAffinity: None
-        sessionAffinityConfig: {}
 
       terminationGracePeriodSeconds: 30
       serviceAccount:
         create: true
         name: "redis-master"
         automountServiceAccountToken: false
-        annotations: {}
 
       pdb:
         create: true
-        minAvailable: ""
-        maxUnavailable: ""
 
     replica:
       kind: StatefulSet
       replicaCount: 3
       revisionHistoryLimit: 10
-      configuration: ""
       disableCommands:
         - FLUSHDB
         - FLUSHALL
-      command: []
-      args: []
       enableServiceLinks: true
-      preExecCmds: []
-      extraFlags: []
-      extraEnvVars: []
-      extraEnvVarsCM: ""
-      extraEnvVarsSecret: ""
       externalMaster:
         enabled: false
-        host: ""
         port: 6379
       containerPorts:
         redis: 6378
@@ -275,23 +192,15 @@ spec:
         successThreshold: 1
         failureThreshold: 5
       
-      customStartupProbe: {}
-      customLivenessProbe: {}
-      customReadinessProbe: {}
-      
       resourcesPreset: "nano"
-      resources: {}
       
       podSecurityContext:
         enabled: true
         fsGroupChangePolicy: Always
-        sysctls: []
-        supplementalGroups: []
         fsGroup: 1001
       
       containerSecurityContext:
         enabled: true
-        seLinuxOptions: {}
         runAsUser: 1001
         runAsGroup: 1001
         runAsNonRoot: true
@@ -302,51 +211,19 @@ spec:
         capabilities:
           drop: ["ALL"]
       
-      schedulerName: ""
       updateStrategy:
         type: RollingUpdate
 
       minReadySeconds: 0
-      priorityClassName: ""
-      podManagementPolicy: ""
       automountServiceAccountToken: false
-      hostAliases: []
-      podLabels: {}
-      podAnnotations: {}
-      shareProcessNamespace: false
-      podAffinityPreset: ""
-      podAntiAffinityPreset: soft
-      nodeAffinityPreset:
-        type: ""
-        key: ""
-        values: []
-      affinity: {}
-      nodeSelector: {}
-      tolerations: []
-      topologySpreadConstraints: []
 
       dnsPolicy: "ClusterFirst"
-      dnsConfig: {}
-      lifecycleHooks: {}
-      extraVolumes: []
-      extraVolumeMounts: []
-      sidecars: []
-      initContainers: []
       persistence:
         enabled: true
-        medium: ""
-        sizeLimit: ""
         path: /data
-        subPath: ""
-        subPathExpr: ""
         accessModes:
           - ReadWriteOnce
         size: 8Gi
-        annotations: {}
-        labels: {}
-        selector: {}
-        dataSource: {}
-        existingClaim: ""
       persistentVolumeClaimRetentionPolicy:
         enabled: false
         whenScaled: Retain
@@ -358,18 +235,9 @@ spec:
           ip-addr: "true"
         ports:
           redis: 6378
-        nodePorts:
-          redis: ""
         externalTrafficPolicy: Cluster
         internalTrafficPolicy: Cluster
-        extraPorts: []
-        clusterIP: ""
-        loadBalancerIP: ""
-        loadBalancerClass: ""
-        loadBalancerSourceRanges: []
-        annotations: {}
         sessionAffinity: None
-        sessionAffinityConfig: {}
      
       terminationGracePeriodSeconds: 30
       autoscaling:
@@ -379,12 +247,9 @@ spec:
         create: true
         name: "redis-replica"
         automountServiceAccountToken: false
-        annotations: {}
       
       pdb:
         create: true
-        minAvailable: ""
-        maxUnavailable: ""
 
     sentinel:
       enabled: false
@@ -396,15 +261,9 @@ spec:
       enabled: true
       allowExternal: true
       allowExternalEgress: true
-      extraIngress: []
-      extraEgress: []
-      ingressNSMatchLabels: {}
-      ingressNSPodMatchLabels: {}
 
       metrics:
         allowExternal: true
-        ingressNSMatchLabels: {}
-        ingressNSPodMatchLabels: {}
 
     podSecurityPolicy:
       create: true
@@ -412,23 +271,13 @@ spec:
 
     rbac:
       create: true
-      rules: []
     serviceAccount:
       create: true
-      name: ""
       automountServiceAccountToken: false
-      annotations: {}
-    pdb: {}
     tls:
       enabled: false
       authClients: true
       autoGenerated: false
-      existingSecret: ""
-      certificatesSecret: ""
-      certFilename: ""
-      certKeyFilename: ""
-      certCAFilename: ""
-      dhParamsFilename: ""
 
     metrics:
       enabled: true
@@ -436,9 +285,7 @@ spec:
         registry: docker.io
         repository: bitnami/redis-exporter
         tag: 1.62.0-debian-12-r2
-        digest: ""
         pullPolicy: IfNotPresent
-        pullSecrets: []
       containerPorts:
         http: 9121
       startupProbe:
@@ -462,16 +309,9 @@ spec:
         timeoutSeconds: 1
         successThreshold: 1
         failureThreshold: 3
-      customStartupProbe: {}
-      customLivenessProbe: {}
-      customReadinessProbe: {}
-      command: []
       redisTargetHost: "localhost"
-      extraArgs: {}
-      extraEnvVars: []
       containerSecurityContext:
         enabled: true
-        seLinuxOptions: {}
         runAsUser: 1001
         runAsGroup: 1001
         runAsNonRoot: true
@@ -481,11 +321,7 @@ spec:
           type: RuntimeDefault
         capabilities:
           drop: ["ALL"]
-      extraVolumes: []
-      extraVolumeMounts: []
       resourcesPreset: "micro"
-      resources: {}
-      podLabels: {}
 
       service:
         enabled: true
@@ -493,25 +329,16 @@ spec:
         ports:
           http: 9121
         externalTrafficPolicy: Cluster
-        extraPorts: []
-        loadBalancerIP: ""
-        loadBalancerClass: ""
-        loadBalancerSourceRanges: []
-        annotations: {}
-        clusterIP: ""
       
       serviceMonitor:
         enabled: true
         port: http-metrics
-        namespace: ""
         interval: 30s
-        scrapeTimeout: ""
         sampleLimit: false
         targetLimit: false
      
       prometheusRule:
         enabled: true
-        additionalLabels: {}
         rules:
           - alert: RedisDown
             expr: redis_up{service="redis-metrics"} == 0
@@ -553,14 +380,10 @@ spec:
         registry: docker.io
         repository: bitnami/os-shell
         tag: 12-debian-12-r27
-        digest: ""
         pullPolicy: IfNotPresent
-        pullSecrets: []
       ## allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge
       resourcesPreset: "micro"
-      resources: {}
       containerSecurityContext:
-        seLinuxOptions: {}
         runAsUser: 0
 
     kubectl:
@@ -568,13 +391,10 @@ spec:
         registry: docker.io
         repository: bitnami/kubectl
         tag: 1.30.3-debian-12-r4
-        digest: ""
         pullPolicy: IfNotPresent
-        pullSecrets: []
       command: ["/opt/bitnami/scripts/kubectl-scripts/update-master-label.sh"]
       containerSecurityContext:
         enabled: true
-        seLinuxOptions: {}
         runAsUser: 1001
         runAsGroup: 1001
         runAsNonRoot: true
@@ -584,9 +404,6 @@ spec:
           type: RuntimeDefault
         capabilities:
           drop: ["ALL"]
-      resources:
-        limits: {}
-        requests: {}
 
     sysctl:
       enabled: true
@@ -594,16 +411,10 @@ spec:
         registry: docker.io
         repository: bitnami/os-shell
         tag: 12-debian-12-r27
-        digest: ""
         pullPolicy: IfNotPresent
-        pullSecrets: []
-      command: []
       mountHostSys: true
       resourcesPreset: "micro"
-      resources: {}
 
     useExternalDNS:
       enabled: false
-      suffix: ""
       annotationKey: external-dns.alpha.kubernetes.io/
-      additionalAnnotations: {}

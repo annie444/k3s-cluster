@@ -3,10 +3,6 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - ./helm-release.yaml
-configMapGenerator:
-  - name: solaredge-dashboard
-    files:
-      - dashboards/solaredge.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
