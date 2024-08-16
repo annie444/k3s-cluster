@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ${STORAGE_CLASS_NAME}-provisioner
+  namespace: storage
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: democratic-csi
+      version: "0.14.6"
+      sourceRef:
+        name: democratic-csi-charts
+        kind: HelmRepository
+        namespace: flux-system
+  values:
+    csiDriver:
+      name: "org.democratic-csi.${STORAGE_CLASS_NAME}"
+      attachRequired: false
+      storageCapacity: false
+      fsGroupPolicy: File
+
+    storageClasses:
+      - name: &className "${STORAGE_CLASS_NAME}"
+        defaultClass: false
+        reclaimPolicy: ${RECLAIM_POLICY:=Retain}
+        volumeBindingMode: WaitForFirstConsumer
+        allowVolumeExpansion: false
+
+    volumeSnapshotClasses:
+      - name: *className
+        deletionPolicy: ${RECLAIM_POLICY:=Retain}
+        parameters:
+          dummy: {}
+ 
+    controller:
+      enabled: true
+      strategy: node
+      externalAttacher:
+        enabled: false
+      externalProvisioner:
+        enabled: true
+      externalResizer:
+        enabled: false
+      externalSnapshotter:
+        enabled: true
+      driver:
+        enabled: true
+        image: docker.io/democraticcsi/democratic-csi:v1.9.3
+
+    node:
+      driver:
+        enabled: true
+        image: docker.io/democraticcsi/democratic-csi:v1.9.3
+        extraVolumeMounts:
+          - name: *className
+            mountPath: &path "${CONFIG_HOST_PATH_PREFIX}/${PATH_POSTFIX}"            
+            mountPropagation: Bidirectional
+      driverRegistrar:
+        enabled: true
+      extraVolumes:
+        - name: *className
+          hostPath:
+            path: *path
+            type: DirectoryOrCreate
+ 
+    driver:
+      config:
+        driver: local-hostpath
+        instance_id:
+        local-hostpath:
+          shareBasePath: *path
+          controllerBasePath: *path
+          dirPermissionsMode: "0777"
+          dirPermissionsUser: 0
+          dirPermissionsGroup: 0
+        _private:
+          csi:
+            volume:
+              idTemplate: "{{ parameters.[csi.storage.k8s.io/pvc/namespace] }}-{{ parameters.[csi.storage.k8s.io/pvc/name] }}"
