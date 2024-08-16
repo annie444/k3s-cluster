@@ -1,0 +1,28 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: rook-ceph
+  namespace: flux-system
+spec:
+  path: "./core/storage/rook-ceph/operator"
+  dependsOn:
+    - name: prometheus-crds
+  postBuild:
+    substitute:
+      APP_NS: rook-ceph
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: rook-ceph-cluster
+  namespace: flux-system
+spec:
+  path: "./core/storage/rook-ceph/cluster"
+  dependsOn:
+    - name: rook-ceph
+    - name: traefik
+    - name: prometheus-crds
+  postBuild:
+    substitute:
+      APP_NS: rook-ceph

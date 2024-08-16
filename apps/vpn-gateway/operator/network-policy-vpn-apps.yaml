@@ -1,0 +1,41 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "vpn-apps-network-policy"
+  namespace: "vpn-apps"
+spec:
+  endpointSelector:
+    matchExpressions:
+    - key: vpn
+      operator: In
+      values:
+        - "enabled"
+        - "test-network-policy"
+  egressDeny:
+  - toEntities:
+    - "world"
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: vpn-gateway
+        app.kubernetes.io/name: pod-gateway
+  - toEndpoints:
+     - matchLabels:
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s-app: kube-dns
+    # NOTE: require `networking.firewall.checkReversePath=false;` in nixos config.
+    toPorts:
+    - ports:
+       - port: "53"
+         protocol: ANY
+      rules:
+        dns:
+          - matchPattern: "*.vpn-gateway.svc.cluster.local"
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: vpn-gateway
+        app.kubernetes.io/name: pod-gateway
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: networking
+        app.kubernetes.io/name: traefik

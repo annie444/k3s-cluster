@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vpn-gateway
+  namespace: vpn-gateway
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: pod-gateway
+      version: 6.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: angelnu-charts
+        namespace: flux-system
+
+  #See https://github.com/angelnu/helm-charts/blob/main/charts/apps/pod-gateway/values.yaml
+  values:
+    DNS: "172.16.0.1,${SECRET_VPN_DNS}"
+
+    routed_namespaces:
+    - vpn-apps
+
+    settings:
+      #NOTE: dns for *.svc.cluster.local
+      DNS_LOCAL_CIDRS: "local"
+      VXLAN_IP_NETWORK: "172.16.0"
+      VXLAN_ID: 42
+      VXLAN_GATEWAY_FIRST_DYNAMIC_IP: 20
+      VPN_INTERFACE: ${SECRET_VPN_INTERFACE}
+      VPN_BLOCK_OTHER_TRAFFIC: true
+      VPN_TRAFFIC_PORT: ${SECRET_VPN_PORT}
+      VPN_LOCAL_CIDRS: "10.0.0.0/8 192.168.0.0/16"
+      NOT_ROUTED_TO_GATEWAY_CIDRS: "${CONFIG_CLUSTER_PODS_NETWORK_IP_POOL} ${CONFIG_CLUSTER_SERVICE_NETWORK_IP_POOL}"
+
+    publicPorts:
+    - hostname: qbittorrent
+      #NOTE: Assing static ip for VXLAN_IP_NETWORK must be lower than VXLAN_GATEWAY_FIRST_DYNAMIC_IP
+      IP: 10
+      ports:
+      - type: tcp
+        port: ${SECRET_VPN_FORWARDED_PORT}
+      
+    image:
+      repository: ghcr.io/angelnu/pod-gateway
+      tag: "v1.10.0"
+
+    webhook:
+      image:
+        repository: ghcr.io/angelnu/gateway-admision-controller
+        tag: "v3.10.0"
+        pullPolicy: Always
+
+      gatewayDefault: true
+      gatewayLabel: setGateway
+      gatewayAnnotation: setGateway
+ 
+    addons:
+      vpn:
+        enabled: true
+        type: gluetun
+        gluetun:
+          image:
+            repository: docker.io/qmcgaw/gluetun
+            tag: "v3.38.0"
+
+        env:
+        - name: VPN_SERVICE_PROVIDER
+          value: custom
+        - name: VPN_TYPE
+          value: ${SECRET_VPN_TYP}
+        - name: VPN_INTERFACE
+          value: ${SECRET_VPN_INTERFACE}
+        - name: OPENVPN_CUSTOM_CONFIG
+          value: /gluetun/config.conf
+        - name: DOT
+          value: "off"
+        # firewall is confgured in vpn-gateway container
+        - name: FIREWALL
+          value: "off"
+        - name: DNS_PLAINTEXT_ADDRESS
+          value: ${SECRET_VPN_DNS}
+
+        configFileSecret: openvpn-config
+
+        livenessProbe:
+          exec:
+            # NOTE: Avoide colon `:` inside the SECRET_VPN_LIVENESS_PROBE variable due to YAMLToJSON: YAMLToJSON: yaml: could not find expected ':' ERROR
+            command:
+              - "sh"
+              - "-c"
+              - ${SECRET_VPN_LIVENESS_PROBE}
+          initialDelaySeconds: 30
+          periodSeconds: 120
+          failureThreshold: 5
+          timeoutSeconds: 20
+
+        networkPolicy:
+          #NOTE: For cilium we define the network policy via CiliumNetworkPolicy
+          enabled: false
+
+  # NOTE: The helm chart use a namespaceSelector but i want a objectSelector for the vpn routing to prevent the volsync backup routed throug the pod-gateway
+  # TODO Better is to have namespaceSelector with option to exlude specific objects, but i dont konw if this is possible
+  postRenderers:
+    - kustomize: 
+        patches:
+          - target: 
+              kind: MutatingWebhookConfiguration
+              name: vpn-gateway-pod-gateway
+            patch: |
+              - op: remove
+                path: /webhooks/0/namespaceSelector              
+              - op: add
+                path: /webhooks/0/objectSelector
+                value:
+                  matchLabels:
+                    vpn: "enabled"

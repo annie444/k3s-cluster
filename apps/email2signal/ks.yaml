@@ -1,0 +1,17 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: email2signal
+  namespace: flux-system
+spec:
+  path: "./apps/email2signal/app"
+  #dependsOn:
+  #  - name: traefik
+  #  - name: volsync
+  #  - name: local-hostpath-persistent
+  #  - name: authelia
+  postBuild:
+    substitute:
+      APP_NAME: email2signal
+      APP_NAMESPACE: notification
+      PVC_CAPACITY: "1Gi"

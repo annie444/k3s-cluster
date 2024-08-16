@@ -1,0 +1,9 @@
+keys:
+  - &annie age1vzktrphual65cu0htt6sy2klt5k7t52nuvqum4envkda5v8xdvfsgn8tvh
+  - &flux age1ytrqecjj2kvak35zl7m8wyn3cqgtd8f64548fc9uzfl9q0js43csn8ul7k
+creation_rules: 
+  - path_regex: config/secrets/[^/]+\.(yaml|json|env|ini|enc)$
+    key_groups:
+      - age:
+        - *annie
+        - *flux
