@@ -13,7 +13,7 @@ metadata:
   name: traefik
   namespace: flux-system
 spec:
-  path: "./kubernetes/core/networking/traefik/operator"
+  path: "./core/networking/traefik/operator"
   dependsOn:
     - name: kube-vip
     - name: traefik-crds
