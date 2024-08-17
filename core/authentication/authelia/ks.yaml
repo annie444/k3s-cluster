@@ -12,6 +12,7 @@ spec:
       APP_NAME: authelia
       APP_NAMESPACE: authentication
       POSTGRES_DATABASE: "authelia"
+      POSTGRES_BOOTSTRAP_CMD: "initdb"
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization

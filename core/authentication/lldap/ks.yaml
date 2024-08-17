@@ -12,6 +12,7 @@ spec:
       APP_NAME: lldap
       APP_NAMESPACE: authentication
       POSTGRES_DATABASE: "lldap"
+      POSTGRES_BOOTSTRAP_CMD: "initdb"
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
