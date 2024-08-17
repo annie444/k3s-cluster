@@ -4,3 +4,4 @@ kind: Kustomization
 namespace: notification
 resources:
   - helm-release.yaml
+  - ../../../templates/ceph

@@ -8,3 +8,9 @@ creation_rules:
       - age:
         - *annie
         - *flux
+  - path_regex: apps/home-assistant/app/init/secret[^/]+\.(yaml|json|env|ini|enc)$
+    encrypted_regex: ^(data|stringData)$
+    key_groups:
+      - age:
+        - *annie
+        - *flux
