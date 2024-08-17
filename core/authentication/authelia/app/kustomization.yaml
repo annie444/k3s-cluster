@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: ${APP_NAMESPACE}
 resources:
   - helm-release.yaml
-  - midleware-auth.yaml
+  - middleware-auth.yaml
