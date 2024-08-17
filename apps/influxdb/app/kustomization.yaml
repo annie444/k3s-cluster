@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: ${APP_NAMESPACE}
 resources:
   - app.yaml
+  - ../../../templates/ceph
