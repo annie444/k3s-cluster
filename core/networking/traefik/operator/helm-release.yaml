@@ -45,11 +45,10 @@ spec:
 
     certResolvers:
       letsencrypt-prod:
-        acme:
-          email: ${SECRET_EMAIL}
-          storage: acme.json
-          httpChallenge:
-            entryPoint: web
+        email: ${SECRET_EMAIL}
+        storage: acme.json
+        httpChallenge:
+          entryPoint: web
 
     metrics:
       prometheus:
