@@ -50,6 +50,7 @@ spec:
       ingressClassName: traefik
       annotation:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        cert-manager.io/cluster-issuer: letsencrypt-prod
 
     persistence:
       enabled: true

@@ -43,6 +43,7 @@ spec:
         className: traefik
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - host: &ingress "vault.${SECRET_DOMAIN}"
             paths:

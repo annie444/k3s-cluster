@@ -82,6 +82,8 @@ spec:
             disabled: false
     ingress:
       dashboard:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
         host:
           name: ceph.${SECRET_DOMAIN}
         ingressClassName: traefik

@@ -4,6 +4,8 @@ kind: IngressRoute
 metadata:
   name: dashboard
   namespace: networking
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   entryPoints:
     - websecure
