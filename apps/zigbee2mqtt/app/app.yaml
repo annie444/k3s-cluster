@@ -89,7 +89,6 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: "authentication-auth@kubernetescrd"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - host: &ingress "zigbee.${SECRET_DOMAIN}"
             paths:

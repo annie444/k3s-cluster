@@ -43,8 +43,6 @@ spec:
         controller: ${APP_NAME}
         type: LoadBalancer
         loadBalancerIP: "${CONFIG_KUBE_VIP_IP}"
-        annotations:
-          cert-manager.io/cluster-issuer: letsencrypt-prod
         ports:
           wireguard:
             port: *wg

@@ -95,7 +95,6 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: "authentication-auth@kubernetescrd"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - host: &host "signal-api.${SECRET_DOMAIN}"
             paths:
@@ -112,7 +111,6 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: "authentication-auth@kubernetescrd"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - host: &host "mail.${SECRET_DOMAIN}"
             paths:
