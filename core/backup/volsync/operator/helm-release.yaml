@@ -20,7 +20,6 @@ spec:
     image:
       repository: ghcr.io/niki-on-github/volsync
       pullPolicy: Always
-      # pullPolicy: IfNotPresent
       tag: "personal-0.9.1"
     manageCRDs: true
     metrics:

@@ -23,7 +23,6 @@ spec:
     secretRef:
       name: sops-age
   postBuild:
-    substitute: {}
     substituteFrom:
     - kind: ConfigMap
       name: cluster-settings
