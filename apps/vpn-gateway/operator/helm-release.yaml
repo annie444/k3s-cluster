@@ -67,22 +67,25 @@ spec:
 
         env:
         - name: VPN_SERVICE_PROVIDER
-          value: custom
+          value: ${SECRET_VPN_PROVIDER}
         - name: VPN_TYPE
-          value: ${SECRET_VPN_TYPE}
+          value: wireguard
         - name: VPN_INTERFACE
           value: ${SECRET_VPN_INTERFACE}
-        - name: OPENVPN_CUSTOM_CONFIG
-          value: /gluetun/config.conf
+        - name: WIREGUARD_ADDRESSES
+          value: ${SECRET_WIREGUARD_ADDRESSES}
+        - name: WIREGUARD_PRIVATE_KEY
+          value: ${SECRET_WIREGUARD_PRIVATE_KEY}
+        - name: SERVER_COUNTRIES
+          value: ${SECRET_SERVER_COUNTRIES}
         - name: DOT
-          value: "off"
-        # firewall is confgured in vpn-gateway container
+          value: ${SECRET_DOT}
         - name: FIREWALL
           value: "off"
         - name: DNS_PLAINTEXT_ADDRESS
           value: ${SECRET_VPN_DNS}
-
-        configFileSecret: openvpn-config
+        - name: OWNED_ONLY
+          value: ${SECRET_OWNED}
 
         livenessProbe:
           exec:
