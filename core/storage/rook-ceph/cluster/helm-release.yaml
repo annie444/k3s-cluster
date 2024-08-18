@@ -82,8 +82,13 @@ spec:
             disabled: false
     ingress:
       dashboard:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
         host:
-          name: ceph.${SECRET_DOMAIN}
+          name: &ingress ceph.${SECRET_DOMAIN}
+        tls:
+          - hosts:
+            - *ingress
         ingressClassName: traefik
     cephBlockPools: 
       - name: ceph-blockpool

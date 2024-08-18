@@ -50,6 +50,7 @@ spec:
       ingressClassName: traefik
       annotation:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      tls: true
 
     persistence:
       enabled: true

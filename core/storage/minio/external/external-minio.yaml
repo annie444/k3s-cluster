@@ -16,6 +16,8 @@ kind: Ingress
 metadata:
   name: external-minio-ingress
   namespace: storage
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
 spec:
   ingressClassName: traefik
   rules:
