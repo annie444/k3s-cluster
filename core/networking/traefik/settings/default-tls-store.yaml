@@ -24,7 +24,7 @@ spec:
     - "${SECRET_DOMAIN}"
     - "*.${SECRET_DOMAIN}"
   issuerRef:
-    name: letsencrypt-prod
+    name: ca-issuer
     kind: ClusterIssuer
 ---
 apiVersion: traefik.io/v1alpha1
