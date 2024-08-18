@@ -22,7 +22,7 @@ spec:
           app:
             image:
               repository: ghcr.io/wg-easy/wg-easy
-              tag: "13"
+              tag: latest
             env:
               WG_HOST: &ingress "wireguard.${SECRET_DOMAIN}"
               WG_PORT: &wg 51820
