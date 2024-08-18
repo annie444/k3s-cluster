@@ -59,7 +59,7 @@ spec:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: ${PVC_CAPACITY}
-        storageClass: rook-ceph
+        storageClass: ceph-block
         globalMounts:
           - path: /data
           
