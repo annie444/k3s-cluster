@@ -61,7 +61,7 @@ spec:
 
     certResolvers:
       letsencrypt-prod:
-        email: ${SECRET_EMAIL}
+        email: ${SECRET_EMAIL_ADDRESS}
         storage: /data/acme.json
         caServer: "https://acme-v02.api.letsencrypt.org/directory"
         dnsChallenge:
