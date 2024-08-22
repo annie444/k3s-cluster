@@ -28,6 +28,10 @@ spec:
             - name: data
               mountPath: /data
 
+    podSecurityContext:
+      fsGroup: 65532
+      fsGroupChangePolicy: "OnRootMismatch"
+
     service:
       externalIPs:
         - "${CONFIG_KUBE_VIP_IP}"
@@ -46,13 +50,7 @@ spec:
 
     ingressRoute:
       dashboard:
-        enabled: true
-        entryPoints:
-          - websecure
-        middlewares:
-          - name: rfc1918
-        tls:
-          certResolver: letsencrypt-prod
+        enabled: false
 
     certResolvers:
       letsencrypt-prod:
