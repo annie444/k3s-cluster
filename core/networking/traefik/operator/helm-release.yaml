@@ -102,6 +102,10 @@ spec:
         port: 8082
         expose: false
         exposedPort: 8082
+      traefik:
+        expose:
+          default: false
+          internal: true
 
     persistence:
       enabled: true
