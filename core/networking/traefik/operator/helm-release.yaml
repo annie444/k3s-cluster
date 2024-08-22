@@ -28,6 +28,13 @@ spec:
           - mountPath: /data
             name: data
 
+    env:
+      - name: CF_DNS_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: dns-token-secret
+            key: api-token
+
     podSecurityContext:
       fsGroup: 65532
       fsGroupChangePolicy: "OnRootMismatch"
@@ -56,8 +63,9 @@ spec:
       letsencrypt-prod:
         email: ${SECRET_EMAIL}
         storage: /data/acme.json
-        httpChallenge:
-          entryPoint: web
+        caServer: "https://acme-v02.api.letsencrypt.org/directory"
+        dnsChallenge:
+          providers: cloudflare
 
     metrics:
       prometheus:
