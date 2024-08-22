@@ -65,7 +65,7 @@ spec:
         storage: /data/acme.json
         caServer: "https://acme-v02.api.letsencrypt.org/directory"
         dnsChallenge:
-          providers: cloudflare
+          provider: cloudflare
 
     metrics:
       prometheus:
