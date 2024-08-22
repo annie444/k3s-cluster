@@ -46,11 +46,13 @@ spec:
 
     ingress:
       enabled: true
-      hostname: "influxdb.${SECRET_DOMAIN}"
+      hostname: &host "influxdb.${SECRET_DOMAIN}"
       ingressClassName: traefik
       annotation:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
       tls: true
+      secrets:
+        - *host
 
     persistence:
       enabled: true

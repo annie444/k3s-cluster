@@ -11,19 +11,26 @@ spec:
   chart:
     spec:
       chart: cert-manager
-      version: v1.15.2
+      version: v1.15.3
       sourceRef:
         kind: HelmRepository
-        name: jetstack-charts
+        name: cert-manager
         namespace: flux-system
 
   values:
-    installCRDs: true
+    crds:
+      enabled: true
+    replicaCount: 1
+    enableCertificateOwnerRef: true
+    ingressShim:
+      defaultIssuerName: letsencrypt-prod
+      defaultIssuerKind: cluster-issuer
 
     webhook:
       enabled: true
 
     cainjector:
+      enabled: true
       replicaCount: 1
 
     prometheus:

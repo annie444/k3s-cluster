@@ -18,21 +18,20 @@ metadata:
   namespace: storage
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt-prod
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: traefik
   rules:
-  - host: &host external-minio.${SECRET_DOMAIN}
-    http:
-      paths:
-      - backend:
-          service:
-            name: external-minio
-            port:
-              number: 9000
-        path: /
-        pathType: Prefix
+    - host: &host external-minio.${SECRET_DOMAIN}
+      http:
+        paths:
+          - backend:
+              service:
+                name: external-minio
+                port:
+                  number: 9000
+            path: /
+            pathType: Prefix
   tls:
-  - hosts:
-    - *host
+    - hosts:
+        - *host
