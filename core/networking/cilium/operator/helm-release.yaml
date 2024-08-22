@@ -64,6 +64,7 @@ spec:
           enabled: true
           className: traefik
           annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: "authentication-auth@kubernetescrd"
             cert-manager.io/cluster-issuer: letsencrypt-prod
           hosts:
             -  &host "hubble.${SECRET_DOMAIN}"

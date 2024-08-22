@@ -20,7 +20,7 @@ data:
   configuration.yaml: |
     authentication_backend:
       password_reset:
-        disable: true
+        disable: false
       refresh_interval: 1m
       ldap:
         address: ldap://lldap.authentication.svc.cluster.local:389

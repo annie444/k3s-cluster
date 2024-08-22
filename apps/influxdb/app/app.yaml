@@ -48,7 +48,7 @@ spec:
       enabled: true
       hostname: &host "influxdb.${SECRET_DOMAIN}"
       ingressClassName: traefik
-      annotation:
+      annotations:
         cert-manager.io/cluster-issuer: letsencrypt-prod
       tls: true
       secrets:

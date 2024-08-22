@@ -97,6 +97,7 @@ spec:
         enabled: true
         ingressClassName: traefik
         annotations:
+          traefik.ingress.kubernetes.io/router.middlewares: "authentication-auth@kubernetescrd"
           cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - &ingress "alert.${SECRET_DOMAIN}"
