@@ -46,9 +46,13 @@ spec:
 
     ingressRoute:
       dashboard:
-        # helm chart use PathPrefix(`/dashboard`) || PathPrefix(`/api`), i want to use a subdomain
-        # => use an IngressRoute object for the dashboard
-        enabled: false
+        enabled: true
+        entryPoints:
+          - websecure
+        middlewares:
+          - name: rfc1918
+        tls:
+          certResolver: letsencrypt-prod
 
     certResolvers:
       letsencrypt-prod:
