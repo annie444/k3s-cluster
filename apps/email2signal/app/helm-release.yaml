@@ -93,7 +93,6 @@ spec:
       rest:
         className: traefik
         annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: "authentication-auth@kubernetescrd"
           cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
@@ -111,7 +110,6 @@ spec:
       webui:
         className: traefik
         annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: websecure
           traefik.ingress.kubernetes.io/router.middlewares: "authentication-auth@kubernetescrd"
           cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:

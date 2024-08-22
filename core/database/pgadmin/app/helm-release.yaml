@@ -28,7 +28,6 @@ spec:
       enabled: true
       ingressClassName: traefik
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
         cert-manager.io/cluster-issuer: letsencrypt-prod
       hosts:
         - host: &host pgadmin.${SECRET_DOMAIN}
