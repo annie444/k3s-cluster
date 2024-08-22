@@ -16,5 +16,4 @@ spec:
           kind: TraefikService
       middlewares:
         - name: rfc1918
-  tls:
-    certResolver: letsencrypt-prod
+  tls: {}
