@@ -1,16 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dns-token-secret
+  namespace: networking
+type: Opaque
+stringData:
+  api-token: ${SECRET_DNS_TOKEN}
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-prod
   namespace: networking
-
 spec:
   acme:
     email: ${SECRET_EMAIL_ADDRESS}
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-prod
+      name: cluster-issuer-account-key
     solvers:
-      - http01:
-          ingress:
-            ingressClassName: traefik
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: dns-token-secret
+              key: api-token
