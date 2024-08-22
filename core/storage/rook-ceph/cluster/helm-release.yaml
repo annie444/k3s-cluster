@@ -90,6 +90,7 @@ spec:
         tls:
           - hosts:
               - *ingress
+            secretName: *ingress
         ingressClassName: traefik
     cephBlockPools: 
       - name: ceph-blockpool

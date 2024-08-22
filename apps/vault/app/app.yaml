@@ -55,6 +55,7 @@ spec:
         tls:
           - hosts:
               - *ingress
+            secretName: *ingress
         
     configMaps:
       configmap:

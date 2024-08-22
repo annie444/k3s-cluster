@@ -77,4 +77,5 @@ spec:
         tls:
           - hosts:
               - *ingress
+            secretName: *ingress
 

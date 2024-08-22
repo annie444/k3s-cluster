@@ -107,6 +107,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: *host
       webui:
         className: traefik
         annotations:
@@ -124,6 +125,7 @@ spec:
         tls:
           - hosts:
               - *host
+            secretName: *host
 
     persistence:
       data:

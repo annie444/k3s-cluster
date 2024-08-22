@@ -66,6 +66,7 @@ spec:
         tls:
           - hosts:
               - *ingress
+            secretName: *ingress
 
       tailscale:
         className: tailscale

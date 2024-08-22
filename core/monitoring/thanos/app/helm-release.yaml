@@ -48,6 +48,7 @@ spec:
         extraTls:
           - hosts:
               - *host
+            secretName: *host
 
     bucketweb:
       enabled: true

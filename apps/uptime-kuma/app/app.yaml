@@ -53,6 +53,7 @@ spec:
         tls:
           - hosts:
               - *ingress
+            secretName: *ingress
         
     persistence:
       data:

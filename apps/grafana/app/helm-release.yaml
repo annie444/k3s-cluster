@@ -33,6 +33,7 @@ spec:
       tls:
         - hosts:
             - *ingress
+          secretName: *ingress
 
     adminUser: admin
     adminPassword: "${SECRET_WEBSERVICES_PASSWORD}"
